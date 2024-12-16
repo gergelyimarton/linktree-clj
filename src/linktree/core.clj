@@ -1,6 +1,6 @@
 (ns linktree.core
   (:require
-   [hiccup.core :refer [html5]]
+   [hiccup2.core :refer [html]]
    [reitit.ring :as ring]
    [ring.adapter.jetty :refer [run-jetty]]))
 
@@ -12,7 +12,7 @@
 
 ;; HTML oldal generálása
 (defn linktree-page []
-  [:html5
+  [:html
    [:head
     [:title "Linktree"]
     [:style "body { font-family: Arial, sans-serif; text-align: center; }
@@ -28,10 +28,10 @@
 (def app
   (ring/ring-handler
    (ring/router
-    [["/" {:get (fn [_]
+    [["/" {:get (fn [a]
                   {:status 200
                    :headers {"Content-Type" "text/html"}
-                   :body (html5 (linktree-page))})}]])))
+                   :body (str (html (linktree-page)))})}]])))
 
 
 

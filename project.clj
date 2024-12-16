@@ -7,7 +7,7 @@
                  [metosin/reitit "0.5.18"] 
                  [ring/ring-core "1.9.6"] 
                  [ring/ring-jetty-adapter "1.9.6"] 
-                 [hiccup "2.0.0-alpha2"]]
+                 [hiccup "2.0.0-RC4"]]
   :main linktree.core  ;; itt állítsd be a fő namespace-t
   :plugins [[lein-ring "0.12.5"]] 
   :ring {:handler linktree.core/app} 
