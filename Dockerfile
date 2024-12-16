@@ -1,23 +1,23 @@
-# # Alapértelmezett kép
-# FROM clojure:tools-deps-bullseye-slim AS build
+# Alapértelmezett kép
+FROM clojure:tools-deps-bullseye-slim AS build
 
-# # Munkakönyvtár beállítása
-# WORKDIR /app
+# Munkakönyvtár beállítása
+WORKDIR /app
 
-# # Leiningen telepítése
-# RUN apt-get update && apt-get install -y curl && \
-#     curl -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && \
-#     chmod +x /usr/local/bin/lein && \
-#     lein
+# Leiningen telepítése
+RUN apt-get update && apt-get install -y curl && \
+    curl -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && \
+    chmod +x /usr/local/bin/lein && \
+    lein
 
-# # Projekt másolása a konténerbe
-# COPY . .
+# Projekt másolása a konténerbe
+COPY . .
 
-# # Függőségek letöltése
-# RUN lein deps
+# Függőségek letöltése
+RUN lein deps
 
-# # Alkalmazás lefordítása JAR fájllá
-# RUN lein uberjar
+# Alkalmazás lefordítása JAR fájllá
+RUN lein uberjar
 
 # Futtatáshoz használt alap kép
 FROM clojure:tools-deps-bullseye-slim
@@ -26,7 +26,7 @@ FROM clojure:tools-deps-bullseye-slim
 WORKDIR /app
 
 # Lefordított JAR fájl másolása a futtató környezetbe
-COPY /target/uberjar/linktree-final-0.1.0-SNAPSHOT-standalone.jar app.jar
+COPY --from=build /app/target/uberjar/linktree-final-0.1.0-SNAPSHOT-standalone.jar app.jar
 
 # Alkalmazás futtatása
 CMD ["java", "-jar", "app.jar"]
